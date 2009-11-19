@@ -207,8 +207,9 @@
 				deserialize();
 				
 				// CHANGED: added to select node on load
-    			var pathname = location.pathname;
-              	current = $("a[href='"+pathname+"']");
+              	current = $('.navTreeCurrentNode');
+              	if (!current.length)
+              	    current = jq('.navTreeItemInPath :last');
               	if (current){
               	    current.addClass("selected").parents("ul, li").add( current.next() ).show();
               	    current.closest('li').children('ul').show();
