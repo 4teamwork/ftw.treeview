@@ -25,7 +25,7 @@ class TreeView(CatalogNavigationTree):
 
         #XXX use querybuilder... 
         #query = queryBuilder()
-        query = {'path': '/'.join(self.context.getPhysicalPath()), 'depth':1}
+        query = {'path': '/'.join(self.context.getPhysicalPath()), 'depth':1, 'Type': 'RepositoryFolder'}
         strategy = getMultiAdapter((context, self), INavtreeStrategy)
         data = buildFolderTree(context, obj=context, query=query, strategy=strategy)
         html=self.recurse(children=data.get('children', []),level=1, bottomLevel=999)
