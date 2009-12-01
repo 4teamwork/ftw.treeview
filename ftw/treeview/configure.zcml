@@ -10,7 +10,7 @@
 
   <genericsetup:registerProfile 
       name="default" 
-      title="jquery treeview plugin" 
+      title="ftw.treeview"
       directory="profiles/default" 
       description="JQuery Treeview Plugin"
       provides="Products.GenericSetup.interfaces.EXTENSION" 
