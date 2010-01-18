@@ -197,7 +197,7 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
     if pruneRoot:
         itemPaths[rootPath]['_pruneSubtree'] = True
 
-    def insertElement(itemPaths, item, forceInsert=False):
+    def insertElement(itemPaths, item, forceInsert=False, addAllowedUrl=True):
         """Insert the given 'item' brain into the tree, which is kept in
         'itemPaths'. If 'forceInsert' is True, ignore node- and subtree-
         filters, otherwise any node- or subtree-filter set will be allowed to
@@ -241,7 +241,8 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
         newNode = {'item'          : item,
                    'depth'         : relativeDepth,
                    'currentItem'   : isCurrent,
-                   'currentParent' : isCurrentParent,}
+                   'currentParent' : isCurrentParent,
+                   'allowedUrl'    : addAllowedUrl and item.getURL() or None,}
 
         insert = True
         if not forceInsert and strategy is not None:
@@ -331,7 +332,8 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
             query = {'path' : {'query' : parentPaths, 'depth' : 0}, 'Type':['RepositoryFolder', 'RepositoryRoot']}
             results = portal_catalog.unrestrictedSearchResults(query)
             for r in results:
-                insertElement(itemPaths, r, forceInsert=True)
+                # do not add 'allowedUrl' since we did an unrestricted search
+                insertElement(itemPaths, r, forceInsert=True, addAllowedUrl=False)
 
     # Return the tree starting at rootPath as the root node.
     return itemPaths[rootPath]
