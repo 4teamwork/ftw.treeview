@@ -33,7 +33,7 @@
         </a>
         <span tal:condition="not: item_url"
               tal:attributes="class string:$item_class${li_class}${li_extr_class}${li_folder_class}"
-              tal:content="node/Title">
+              tal:content="node/Title"/>
     </span>
 
     <ul tal:attributes="class python:'navTree navTreeLevel'+str(level)"
