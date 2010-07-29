@@ -26,11 +26,12 @@ setup(name='ftw.treeview',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'collective.jqcookie',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
       # -*- Entry points: -*-
       [z3c.autoinclude.plugin]
-      target = opengever
+      target = plone
       """,
       )
