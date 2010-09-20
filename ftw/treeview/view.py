@@ -1,11 +1,8 @@
-from Products.Five.browser import BrowserView
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.browser.navtree import NavtreeQueryBuilder
 from Products.CMFPlone.browser.navigation import CatalogNavigationTree
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
-from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from zope.component import getMultiAdapter, queryUtility
+from zope.component import getMultiAdapter
 from Acquisition import aq_inner
 
 from navtree import  buildFolderTree
@@ -19,11 +16,16 @@ class TreeView(CatalogNavigationTree):
     def render(self):
         """return a html tree for treeview"""
         
-
         current = context = aq_inner(self.context)
-        
-        while current.Type() != 'RepositoryRoot':
-            current = current.aq_parent
+        # Don't travsere to top-level application obj if TreePortlet
+        # was added to the Plone Site Root
+        if current.Type() == 'Plone Site':
+            return current.Title()
+        else:  
+            while current.Type() != 'RepositoryRoot':
+                current = current.aq_parent
+        return current.Title()
+
 
         queryBuilder = NavtreeQueryBuilder(context)
 
