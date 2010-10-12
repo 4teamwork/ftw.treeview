@@ -12,14 +12,14 @@ class TreeView(CatalogNavigationTree):
     recurse = ViewPageTemplateFile('recurse.pt')
 
     def render(self, root_path=None):
-        """return a html tree for treeview"""
+        """return a html tree for treeview
+        """
         if root_path:
             portal_url = getToolByName(self.context, 'portal_url')
             current = portal_url.getPortalObject().restrictedTraverse(
                 root_path.encode('utf-8'))
-
-            if ('/'.join(current.getPhysicalPath())+'/').startswith(
-                    '/'.join(self.context.getPhysicalPath())+'/'):
+            #check if the actual context is in the current repositoryroot
+            if root_path in self.context.getPhysicalPath():
                 context = aq_inner(self.context)
                 return self.get_tree(context, current)
             else:
@@ -42,10 +42,12 @@ class TreeView(CatalogNavigationTree):
             'path': dict(query='/'.join(current.getPhysicalPath()), depth=-1),
             'Type': 'RepositoryFolder'}
         strategy = getMultiAdapter((context.aq_inner, self), INavtreeStrategy)
-        #import pdb; pdb.set_trace( )
+
         data = buildFolderTree(context.aq_inner,
             obj=context.aq_inner, query=query, strategy=strategy)
-        children = data.get('children')[0].get('children')
-
-        html=self.recurse(children=children, level=1, bottomLevel=999)
-        return html
+        if data.get('children'):
+            children = data.get('children')[0].get('children')
+            html=self.recurse(children=children, level=1, bottomLevel=999)
+            return html
+        else:
+            return ''
