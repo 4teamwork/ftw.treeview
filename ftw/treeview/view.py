@@ -35,7 +35,7 @@ class TreeView(CatalogNavigationTree):
         if current.Type() == 'Plone Site':
             return current.Title()
         else:
-            while current.Type() != 'RepositoryRoot':
+            while current.Type() != 'RepositoryRoot' and current.Type() != 'Plone Site':
                 current = current.aq_parent
 
         query = {
