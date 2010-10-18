@@ -175,7 +175,7 @@
 					data[i] = $(e).is(":has(>ul:visible)") ? 1 : 0;
 				});
 				// CHANGED: make cookie use '/' as path
-				$.cookie(settings.cookieId, data.join(""), {path: '/',} );
+				$.cookie(settings.cookieId, data.join(""), {path: '/'} );
 			}
 			
 			function deserialize() {
