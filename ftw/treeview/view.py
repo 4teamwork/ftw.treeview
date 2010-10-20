@@ -32,7 +32,6 @@ class TreeView(CatalogNavigationTree):
             return self.get_tree(context, current)
 
     def get_tree(self, context, current):
-        return ''
         self.context = context
         # Don't travsere to top-level application obj if TreePortlet
         # was added to the Plone Site Root
