@@ -47,9 +47,10 @@ class TreeView(CatalogNavigationTree):
 
         # we access configuration in as json under some key
         configuration = IDictStorage(self)
-        custom = json.load(configuration.get(
+        import ipdb; ipdb.set_trace()
+        custom = json.loads(configuration.get(
             # make sure key is unique as "deep" as you want
-            'ftw-treeview-opengever-mandat1-',
+            'ftw-treeview-opengever-mandat1-username',
             # return default settings
             '{}'))
         # now use the to create html
