@@ -5,8 +5,9 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getMultiAdapter
 from Acquisition import aq_inner
 from navtree import  buildFolderTree
-import simplejson as json
-from ftw.dictstorage.interfaces import IDictStorage
+# TODO: implements the treeportlet persistent
+# import simplejson as json
+# from ftw.dictstorage.interfaces import IDictStorage
 
 
 class TreeView(CatalogNavigationTree):
@@ -31,6 +32,7 @@ class TreeView(CatalogNavigationTree):
             return self.get_tree(context, current)
 
     def get_tree(self, context, current):
+        return ''
         self.context = context
         # Don't travsere to top-level application obj if TreePortlet
         # was added to the Plone Site Root
@@ -45,15 +47,15 @@ class TreeView(CatalogNavigationTree):
             'Type': 'RepositoryFolder'}
         strategy = getMultiAdapter((context.aq_inner, self), INavtreeStrategy)
 
-        # we access configuration in as json under some key
-        configuration = IDictStorage(self)
-        custom = json.loads(configuration.get(
-            # make sure key is unique as "deep" as you want
-            'ftw-treeview-opengever-mandat1-username',
-            # return default settings
-            '{}'))
-        # now use the to create html
-        raise NotImplemented
+        # # we access configuration in as json under some key
+        # configuration = IDictStorage(self)
+        # custom = json.loads(configuration.get(
+        #     # make sure key is unique as "deep" as you want
+        #     'ftw-treeview-opengever-mandat1-username',
+        #     # return default settings
+        #     '{}'))
+        # # now use the to create html
+        # raise NotImplemented
 
         data = buildFolderTree(context.aq_inner,
             obj=context.aq_inner, query=query, strategy=strategy)
