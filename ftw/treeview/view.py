@@ -5,6 +5,8 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getMultiAdapter
 from Acquisition import aq_inner
 from navtree import  buildFolderTree
+import simplejson as json
+from ftw.dictstorage.interfaces import IDictStorage
 
 
 class TreeView(CatalogNavigationTree):
@@ -42,6 +44,16 @@ class TreeView(CatalogNavigationTree):
             'path': dict(query='/'.join(current.getPhysicalPath()), depth=-1),
             'Type': 'RepositoryFolder'}
         strategy = getMultiAdapter((context.aq_inner, self), INavtreeStrategy)
+
+        # we access configuration in as json under some key
+        configuration = IDictStorage(self)
+        custom = json.load(configuration.get(
+            # make sure key is unique as "deep" as you want
+            'ftw-treeview-opengever-mandat1-',
+            # return default settings
+            '{}'))
+        # now use the to create html
+        raise NotImplemented
 
         data = buildFolderTree(context.aq_inner,
             obj=context.aq_inner, query=query, strategy=strategy)

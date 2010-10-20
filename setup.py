@@ -27,7 +27,7 @@ setup(name='ftw.treeview',
       install_requires=[
           'setuptools',
           'collective.jqcookie',
-          # -*- Extra requirements: -*-
+          'ftw.dictstorage',
       ],
       entry_points="""
       # -*- Entry points: -*-
