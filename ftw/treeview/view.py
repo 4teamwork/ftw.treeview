@@ -60,7 +60,12 @@ class TreeView(CatalogNavigationTree):
             obj=context.aq_inner, query=query, strategy=strategy)
         if data.get('children'):
             children = data.get('children')[0].get('children')
-            html=self.recurse(children=children, level=1, bottomLevel=999)
+            html=self.recurse(children=children, level=1, bottomLevel=999,
+                              language=self.get_preferred_language_code())
             return html
         else:
             return ''
+
+    def get_preferred_language_code(self):
+        ltool = getToolByName(self.context, 'portal_languages')
+        return ltool.getPreferredLanguage()
