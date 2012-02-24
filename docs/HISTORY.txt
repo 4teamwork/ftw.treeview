@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.1 (unreleased)
-----------------
+1.0.1 (2012-02-24)
+------------------
 
 - Add support for titles in alternative languages. Just add metadata to the
   catalog with name "title_{preferred language code}".
