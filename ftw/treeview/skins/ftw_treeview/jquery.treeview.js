@@ -2,7 +2,7 @@
     - omit expand on folder click
     - use '/' as cookie path
     - select active item on load
-*/ 
+*/
 /*
  * Treeview 1.4 - jQuery plugin to hide and show branches of a tree
  * http://bassistance.de/jquery-plugins/jquery-plugin-treeview/
@@ -53,7 +53,7 @@
 			} else {
 				this.hide();
 				if (callback)
-					this.each(callback);				
+					this.each(callback);
 			}
 		},
 		prepareBranches: function(settings) {
@@ -71,18 +71,18 @@
 			this.filter(":has(>ul):not(:has(>span>a))").find(">span").click(function(event) {
 				toggler.apply($(this).next());
 			}).add( $("a", this) ).hoverClass();
-			
+
 			if (!settings.prerendered) {
 				// handle closed ones first
 				this.filter(":has(>ul:hidden)")
 						.addClass(CLASSES.expandable)
 						.replaceClass(CLASSES.last, CLASSES.lastExpandable);
-						
+
 				// handle open ones
 				this.not(":has(>ul:hidden)")
 						.addClass(CLASSES.collapsable)
 						.replaceClass(CLASSES.last, CLASSES.lastCollapsable);
-						
+
 	            // create hitarea
 				this.prepend("<div class=\"" + CLASSES.hitarea + "\"/>").find("div." + CLASSES.hitarea).each(function() {
 					var classes = "";
@@ -92,27 +92,27 @@
 					$(this).addClass( classes );
 				});
 			}
-			
+
 			// apply event to hitarea
 			this.find("div." + CLASSES.hitarea).click( toggler );
 		},
 		treeview: function(settings) {
-			
+
 			settings = $.extend({
 				cookieId: "treeview"
 			}, settings);
-			
+
 			if (settings.add) {
 				return this.trigger("add", [settings.add]);
 			}
-			
+
 			if ( settings.toggle ) {
 				var callback = settings.toggle;
 				settings.toggle = function() {
 					return callback.apply($(this).parent()[0], arguments);
 				};
 			}
-		
+
 			// factory for treecontroller
 			function treeController(tree, control) {
 				// factory for click handlers
@@ -132,9 +132,9 @@
 				// click on second to expand tree
 				$("a:eq(1)", control).click( handler(CLASSES.expandable) );
 				// click on third to toggle tree
-				$("a:eq(2)", control).click( handler() ); 
+				$("a:eq(2)", control).click( handler() );
 			}
-		
+
 			// handle toggle event
 			function toggler() {
 				$(this)
@@ -165,7 +165,7 @@
 						.heightHide( settings.animated, settings.toggle );
 				}
 			}
-			
+
 			function serialize() {
 				function binary(arg) {
 					return arg ? 1 : 0;
@@ -177,7 +177,7 @@
 				// CHANGED: make cookie use '/' as path
 				$.cookie(settings.cookieId, data.join(""), {path: '/'} );
 			}
-			
+
 			function deserialize() {
 				var stored = $.cookie(settings.cookieId);
 				if ( stored ) {
@@ -187,14 +187,14 @@
 					});
 				}
 			}
-			
+
 			// add treeview class to activate styles
 			this.addClass("treeview");
-			
+
 			// prepare branches and find all tree items with child lists
 			var branches = this.find("li").prepareBranches(settings);
-			
-			
+
+
 			switch(settings.persist) {
 			case "cookie":
 				var toggleCallback = settings.toggle;
@@ -205,15 +205,15 @@
 					}
 				};
 				deserialize();
-				
+
 				// CHANGED: added to select node on load
               	current = $('.navTreeCurrentNode');
               	if (!current.length)
-              	    current = jq('.navTreeItemInPath :last');
+              	    current = $('.navTreeItemInPath :last');
               	if (current){
               	    current.addClass("selected").parents("ul, li").add( current.next() ).show();
               	    current.closest('li').children('ul').show();
-              	       
+
               	}
               	// uncomment to add the current node to the cookie
 				// serialize();
@@ -225,15 +225,15 @@
 				}
 				break;
 			}
-			
+
 			branches.applyClasses(settings, toggler);
-				
+
 			// if control option is set, create the treecontroller and show it
 			if ( settings.control ) {
 				treeController(this, settings.control);
 				$(settings.control).show();
 			}
-			
+
 			return this.bind("add", function(event, branches) {
 				$(branches).prev()
 					.removeClass(CLASSES.last)
@@ -246,7 +246,7 @@
 			});
 		}
 	});
-	
+
 	// classes used by the plugin
 	// need to be styled via external stylesheet, see first example
 	var CLASSES = $.fn.treeview.classes = {
@@ -263,8 +263,8 @@
 		last: "last",
 		hitarea: "hitarea"
 	};
-	
+
 	// provide backwards compability
 	$.fn.Treeview = $.fn.treeview;
-	
+
 })(jQuery);
