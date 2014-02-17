@@ -10,6 +10,7 @@ from types import StringType
 
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
 
+
 class NavtreeStrategyBase(object):
     """Basic navigation tree strategy that does nothing.
     """
@@ -17,7 +18,7 @@ class NavtreeStrategyBase(object):
     implements(INavtreeStrategy)
 
     __allow_access_to_unprotected_subobjects__ = 1
-    
+
     rootPath = None
     showAllParents = False
 
@@ -29,9 +30,10 @@ class NavtreeStrategyBase(object):
 
     def decoratorFactory(self, node):
         return node
-        
+
     def showChildrenOf(self, object):
         return True
+
 
 def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase()):
     """Create a tree structure representing a navigation tree. By default,
@@ -84,7 +86,7 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
 
             decoratorFactory(node) -- a method returning a dict; this can inject
                 additional keys in a node being inserted.
-                
+
             showChildrenOf(object) -- a method returning True if children of
                 the given object (normally the root) should be returned
 
@@ -114,7 +116,7 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
     rootPath = strategy.rootPath
 
     request = getattr(context, 'REQUEST', {})
-    
+
     # Find the object's path. Use parent folder if context is a default-page
 
     objPath = None
@@ -127,7 +129,7 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
 
     portalPath = portal_url.getPortalPath()
     portalObject = portal_url.getPortalObject()
-    
+
     # Calculate rootPath from the path query if not set.
 
     if 'path' not in query:
@@ -148,7 +150,7 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
                     navtreeContextPathElements = navtreeContextPath[len(portalPath)+1:].split('/')
                     # Short-circuit if we won't be able to find this path
                     if len(navtreeContextPathElements) < (navtreeLevel - 1):
-                        return {'children' : []}
+                        return {'children': []}
                     rootPath = portalPath + '/' + '/'.join(navtreeContextPathElements[:navtreeLevel-1])
                 else:
                     rootPath = portalPath
@@ -159,7 +161,7 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
 
     # Determine if we need to prune the root (but still force the path to)
     # the parent if necessary
-    
+
     pruneRoot = False
     if strategy is not None:
         rootObject = portalObject.unrestrictedTraverse(rootPath, None)
@@ -188,11 +190,11 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
     # /bar,).
 
     itemPaths = {}
-    
+
     # Add an (initially empty) node for the root
-    itemPaths[rootPath] = {'children' : []}
-    
-    # If we need to "prune" the parent (but still allow showAllParent to 
+    itemPaths[rootPath] = {'children': []}
+
+    # If we need to "prune" the parent (but still allow showAllParent to
     # force some children), do so now
     if pruneRoot:
         itemPaths[rootPath]['_pruneSubtree'] = True
@@ -242,7 +244,7 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
                    'depth'         : relativeDepth,
                    'currentItem'   : isCurrent,
                    'currentParent' : isCurrentParent,
-                   'allowedUrl'    : addAllowedUrl and item.getURL() or None,}
+                   'allowedUrl'    : addAllowedUrl and item.getURL() or None, }
 
         insert = True
         if not forceInsert and strategy is not None:
@@ -279,7 +281,7 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
             if expand and (not forceInsert and strategy is not None):
                 expand = strategy.subtreeFilter(newNode)
 
-            children = newNode.setdefault('children',[])
+            children = newNode.setdefault('children', [])
             if expand:
                 # If we had some orphaned children for this node, attach
                 # them
@@ -329,7 +331,7 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
 
         # If we were outright missing some nodes, find them again
         if len(parentPaths) > 0:
-            query = {'path' : {'query' : parentPaths, 'depth' : 0}, 'Type':['RepositoryFolder', 'RepositoryRoot']}
+            query = {'path': {'query': parentPaths, 'depth': 0}, 'Type': ['RepositoryFolder', 'RepositoryRoot']}
             results = portal_catalog.unrestrictedSearchResults(query)
             for r in results:
                 # do not add 'allowedUrl' since we did an unrestricted search

@@ -9,7 +9,6 @@ from navtree import  buildFolderTree
 # import simplejson as json
 # from ftw.dictstorage.interfaces import IDictStorage
 
-
 class TreeView(CatalogNavigationTree):
 
     recurse = ViewPageTemplateFile('recurse.pt')
@@ -38,7 +37,8 @@ class TreeView(CatalogNavigationTree):
         if current.Type() == 'Plone Site':
             return current.Title()
         else:
-            while current.Type() != 'RepositoryRoot' and current.Type() != 'Plone Site':
+            while current.Type() != 'RepositoryRoot' \
+              and current.Type() != 'Plone Site':
                 current = current.aq_parent
 
         query = {
