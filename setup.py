@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = open('ftw/treeview/version.txt').read().strip()
+version = '1.0.3.dev0'
 maintainer = 'Victor Baumann'
 
 setup(name='ftw.treeview',
