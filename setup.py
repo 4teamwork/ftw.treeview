@@ -2,34 +2,42 @@ from setuptools import setup, find_packages
 import os
 
 version = '1.0.3.dev0'
-maintainer = 'Victor Baumann'
 
 setup(name='ftw.treeview',
       version=version,
-      description="" + \
-          ' (Maintainer: %s)' % maintainer,
+      description='Adds a navigation treeview widget to plone.',
+
       long_description=open("README.rst").read() + "\n" + \
                        open(os.path.join("docs", "HISTORY.txt")).read(),
-      # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
+
       classifiers=[
-        "Programming Language :: Python",
-        "Topic :: Software Development :: Libraries :: Python Modules",
+        'Framework :: Plone',
+        'Framework :: Plone :: 4.0',
+        'Framework :: Plone :: 4.1',
+        'Framework :: Plone :: 4.2',
+        'Framework :: Plone :: 4.3',
+        'Intended Audience :: Developers',
+        'Programming Language :: Python',
+        'Topic :: Software Development :: Libraries :: Python Modules',
         ],
+
       keywords='',
-      author='%s, 4teamwork GmbH' % maintainer,
+      author='4teamwork AG',
       author_email='mailto:info@4teamwork.ch',
-      maintainer=maintainer,
-      url='http://psc.4teamwork.ch/dist/ftw.treeview',
-      license='GPL2',
+      url='https://github.com/4teamwork/ftw.treeview',
+
+      license='GPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['ftw'],
       include_package_data=True,
       zip_safe=False,
+
       install_requires=[
           'setuptools',
           'collective.jqcookie',
           # 'ftw.dictstorage',
       ],
+
       entry_points="""
       # -*- Entry points: -*-
       [z3c.autoinclude.plugin]
