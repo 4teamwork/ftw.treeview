@@ -1,13 +1,34 @@
-from Products.CMFPlone.browser.navigation import CatalogNavigationTree
-from Products.CMFPlone.utils import getToolByName
-from plone.app.layout.navigation.interfaces import INavtreeStrategy
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from zope.component import getMultiAdapter
 from Acquisition import aq_inner
 from navtree import  buildFolderTree
+from plone.app.layout.navigation.interfaces import INavtreeStrategy
+from plone.memoize import ram
+from plone.uuid.interfaces import IUUID
+from Products.CMFPlone.browser.navigation import CatalogNavigationTree
+from Products.CMFPlone.utils import getToolByName
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.component import getMultiAdapter
+
+
 # TODO: implements the treeportlet persistent
 # import simplejson as json
 # from ftw.dictstorage.interfaces import IDictStorage
+
+
+def treeview_cachekey(method, self, context, current):
+    """A cache key depending on the hash of the current root node and
+    the user ID.
+    """
+    mtool = getToolByName(context, 'portal_membership')
+    member = mtool.getAuthenticatedMember()
+    userid = member.getId()
+    uuid = IUUID(current)
+
+    return '%s.%s:%s:%s' % (
+        self.__class__.__module__,
+        self.__class__.__name__,
+        uuid,
+        userid)
+
 
 class TreeView(CatalogNavigationTree):
 
@@ -30,6 +51,7 @@ class TreeView(CatalogNavigationTree):
             current = context = aq_inner(self.context)
             return self.get_tree(context, current)
 
+    @ram.cache(treeview_cachekey)
     def get_tree(self, context, current):
         self.context = context
         # Don't travsere to top-level application obj if TreePortlet
