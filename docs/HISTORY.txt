@@ -4,6 +4,10 @@ Changelog
 1.0.4 (unreleased)
 ------------------
 
+- Include server hostname in TreeView cache-key in order to make
+  sure we don't break virtual hosting.
+  [lgraf]
+
 - Implemented per-user caching for TreeView results.
   [lgraf]
 
