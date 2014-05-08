@@ -58,6 +58,12 @@ class TreeView(CatalogNavigationTree):
 
     recurse = ViewPageTemplateFile('recurse.pt')
 
+    def __call__(self):
+        self.request.response.setHeader('X-Theme-Disabled', 'True')
+
+        root_path = self.request.get('root_path')
+        return self.render(root_path)
+
     def render(self, root_path=None):
         """return a html tree for treeview
         """
