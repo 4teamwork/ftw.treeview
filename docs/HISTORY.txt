@@ -4,6 +4,9 @@ Changelog
 1.0.4 (unreleased)
 ------------------
 
+- Added `call` method to the treeview, to allow accessing per ajax.
+  [phgross]
+
 - Include server hostname in TreeView cache-key in order to make
   sure we don't break virtual hosting.
   [lgraf]
@@ -38,4 +41,3 @@ Changelog
 ----------------
 
 - final release
-
