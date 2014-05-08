@@ -11,19 +11,47 @@ from zope.component import getMultiAdapter
 # import simplejson as json
 # from ftw.dictstorage.interfaces import IDictStorage
 
-def treeview_cachekey(method, self, context, current):
-    """A cache key depending on the hash of the current root node and
-    the user ID.
+
+def get_hostname(request):
+    """Extract hostname in virtual-host-safe manner
+
+    @param request: HTTPRequest object, assumed contains environ dictionary
+
+    @return: Host DNS name, as requested by client. Lowercased, no port part.
+             Return None if host name is not present in HTTP request headers
+             (e.g. unit testing).
     """
+
+    if "HTTP_X_FORWARDED_HOST" in request.environ:
+        # Virtual host
+        host = request.environ["HTTP_X_FORWARDED_HOST"]
+    elif "HTTP_HOST" in request.environ:
+        # Direct client request
+        host = request.environ["HTTP_HOST"]
+    else:
+        return None
+
+    # separate to domain name and port sections
+    host = host.split(":")[0].lower()
+
+    return host
+
+
+def treeview_cachekey(method, self, context, current):
+    """A cache key depending on the hash of the current root node, the user ID
+    and the server hostname (to make sure we don't break virtual hosting).
+    """
+    hostname = get_hostname(self.request)
     mtool = getToolByName(context, 'portal_membership')
     member = mtool.getAuthenticatedMember()
     userid = member.getId()
 
-    return '%s.%s:%s:%s' % (
+    return '%s.%s:%s:%s:%s' % (
         self.__class__.__module__,
         self.__class__.__name__,
         hash(current),
-        userid)
+        userid,
+        hostname)
 
 
 class TreeView(CatalogNavigationTree):
