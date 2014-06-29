@@ -1,0 +1,17 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:upgrade-step="http://namespaces.zope.org/ftw.upgrade"
+    i18n_domain="ftw.treeview">
+
+  <include package="ftw.upgrade" file="meta.zcml" />
+
+  <upgrade-step:importProfile
+      title="Update registry entries."
+      profile="ftw.treeview:default"
+      source="0.1"
+      destination="1120"
+      directory="profiles/1120"
+      />
+
+</configure>

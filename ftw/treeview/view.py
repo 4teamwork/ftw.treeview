@@ -1,11 +1,16 @@
 from Acquisition import aq_inner
+from ftw.treeview.interfaces import ITreeviewSettings
+from navtree import buildFolderTree
+from plone.app.layout.navigation.interfaces import INavtreeStrategy
+from plone.memoize import ram
+from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.browser.navigation import CatalogNavigationTree
 from Products.CMFPlone.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from navtree import  buildFolderTree
-from plone.app.layout.navigation.interfaces import INavtreeStrategy
-from plone.memoize import ram
 from zope.component import getMultiAdapter
+from zope.component import getUtility
+import time
+
 
 # TODO: implements the treeportlet persistent
 # import simplejson as json
@@ -37,10 +42,23 @@ def get_hostname(request):
     return host
 
 
+def is_treeviw_caching_active():
+    registry = getUtility(IRegistry)
+    proxy = registry.forInterface(ITreeviewSettings)
+    return proxy.caching_activ
+
+
 def treeview_cachekey(method, self, context, current):
     """A cache key depending on the hash of the current root node, the user ID
     and the server hostname (to make sure we don't break virtual hosting).
+
+    The treeview caching can be activated and deactivated via
+    the plone.registry.
     """
+
+    if is_treeviw_caching_active():
+        return time.time()
+
     hostname = get_hostname(self.request)
     mtool = getToolByName(context, 'portal_membership')
     member = mtool.getAuthenticatedMember()
@@ -71,7 +89,7 @@ class TreeView(CatalogNavigationTree):
             portal_url = getToolByName(self.context, 'portal_url')
             current = portal_url.getPortalObject().restrictedTraverse(
                 root_path.encode('utf-8'))
-            #check if the actual context is in the current repositoryroot
+            # check if the actual context is in the current repositoryroot
             if root_path in self.context.getPhysicalPath():
                 context = aq_inner(self.context)
                 return self.get_tree(context, current)
@@ -112,7 +130,7 @@ class TreeView(CatalogNavigationTree):
             obj=context.aq_inner, query=query, strategy=strategy)
         if data.get('children'):
             children = data.get('children')[0].get('children')
-            html=self.recurse(children=children, level=1, bottomLevel=999,
+            html = self.recurse(children=children, level=1, bottomLevel=999,
                               language=self.get_preferred_language_code())
             return html
         else:
