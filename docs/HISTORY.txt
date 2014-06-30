@@ -4,7 +4,8 @@ Changelog
 1.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Disable caching for Treeview results.
+  [phgross]
 
 
 1.1 (2014-06-05)
