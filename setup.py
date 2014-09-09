@@ -3,6 +3,12 @@ import os
 
 version = '1.1.2.dev0'
 
+tests_require = [
+    'ftw.testing',
+    'plone.app.testing',
+    ]
+
+
 setup(name='ftw.treeview',
       version=version,
       description='Adds a navigation treeview widget to plone.',
@@ -37,6 +43,9 @@ setup(name='ftw.treeview',
           'collective.jqcookie',
           # 'ftw.dictstorage',
       ],
+
+      tests_require=tests_require,
+      extras_require={'tests': tests_require},
 
       entry_points="""
       # -*- Entry points: -*-
