@@ -1,21 +1,28 @@
-<configure 
-    xmlns="http://namespaces.zope.org/zope"     
-    xmlns:browser="http://namespaces.zope.org/browser" 
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:cmf="http://namespaces.zope.org/cmf"
-    xmlns:genericsetup="http://namespaces.zope.org/genericsetup" 
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="ftw.treeview">
 
   <five:registerPackage package="." />
 
-  <genericsetup:registerProfile 
-      name="default" 
+  <genericsetup:registerProfile
+      name="default"
       title="ftw.treeview"
-      directory="profiles/default" 
+      directory="profiles/default"
       description="JQuery Treeview Plugin"
-      provides="Products.GenericSetup.interfaces.EXTENSION" 
+      provides="Products.GenericSetup.interfaces.EXTENSION"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot" />
 
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="ftw.treeview: uninstall"
+      directory="profiles/uninstall"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
+      />
 
   <cmf:registerDirectory name="ftw_treeview"/>
 
