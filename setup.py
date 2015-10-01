@@ -39,6 +39,7 @@ setup(name='ftw.treeview',
       zip_safe=False,
 
       install_requires=[
+          'Plone',
           'setuptools',
           'collective.jqcookie',
           # 'ftw.dictstorage',
